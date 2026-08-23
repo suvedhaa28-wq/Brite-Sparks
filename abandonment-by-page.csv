@@ -1,0 +1,9 @@
+page,page_name,views,completions,abandonments,abandonment_rate,avg_time_sec,validation_errors,session_timeouts
+1,Applicant Details,12450,11080,1370,0.1100,142,1842,0
+2,Residence Details,11080,10016,1064,0.0960,118,912,0
+3,Household Composition,10016,6410,3606,0.3600,486,6688,383
+4,Income & Employment,6410,4429,1981,0.3090,392,5417,291
+5,Capital & Resources,4429,3534,895,0.2020,245,3092,147
+6,Expenditure & Deductions,3534,3248,286,0.0810,164,1024,32
+7,Other Programs & Payment,3248,2962,286,0.0880,135,841,18
+8,Declaration & Review,2962,2710,252,0.0850,98,412,8
