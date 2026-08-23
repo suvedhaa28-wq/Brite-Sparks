@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 7: Other Programs & Payment | Form HSP-1 (LS-2026/04)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your payment details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 7 of 8</span>
+        <h1 style="margin-top:8px;">Other Support & Payment Method</h1>
+        <p class="hint">Fields marked with <span class="req-star">*</span> are required.</p>
+
+        <form id="form-step-7" novalidate>
+          <fieldset class="form-group" style="background:#f8fafc; border:2px solid #cbd5e1;">
+            <legend>Prior Program Assistance (Directive LS-2026/04 - 24 Month Lookback) <span class="req-star">*</span></legend>
+            <p class="hint">Has ANY household member received assistance from an equivalent support program in another county or state during the <strong>PRECEDING 24 MONTHS</strong>?</p>
+            
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="prior_assistance" value="Yes" aria-required="true"> 
+                <span>Yes</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="prior_assistance" value="No" aria-required="true"> 
+                <span>No</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="prior_assistance" value="I don't know" aria-required="true"> 
+                <span>I don't know</span>
+              </label>
+            </div>
+            <span id="prior_assistance-error" class="field-error"></span>
+
+            <div id="prior-details-box" style="margin-top:16px; padding:16px; background:#ffffff; border:1px solid #cbd5e1; border-radius:6px;" hidden>
+              <h3 style="font-size:1rem; color:var(--primary-color); margin-top:0;">Details of Prior Assistance</h3>
+              
+              <div class="form-group">
+                <label for="prior_jurisdiction">Jurisdiction (County / State Name) <span class="req-star">*</span></label>
+                <input type="text" id="prior_jurisdiction" name="prior_jurisdiction" class="form-control" placeholder="e.g. Travis County, TX">
+                <span id="prior_jurisdiction-error" class="field-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="prior_program_name">Program Name <span class="req-star">*</span></label>
+                <input type="text" id="prior_program_name" name="prior_program_name" class="form-control" placeholder="e.g. Emergency Rental Assistance">
+                <span id="prior_program_name-error" class="field-error"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="prior_dates">Approximate Dates Received <span class="req-star">*</span></label>
+                <input type="text" id="prior_dates" name="prior_dates" class="form-control" placeholder="e.g. June 2025 - August 2025">
+                <span id="prior_dates-error" class="field-error"></span>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend>Preferred Assistance Payment Method <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="payment_method" value="Direct Deposit" aria-required="true"> <span>Direct Deposit to Bank Account</span></label>
+              <label class="radio-label"><input type="radio" name="payment_method" value="Cheque" aria-required="true"> <span>Paper Check by Mail</span></label>
+            </div>
+            <span id="payment_method-error" class="field-error"></span>
+          </fieldset>
+
+          <div id="bank-details-box" class="form-row" hidden>
+            <div class="form-group col-6">
+              <label for="sort_code">Routing Number / Sort Code <span class="req-star">*</span></label>
+              <input type="text" id="sort_code" name="sort_code" class="form-control" placeholder="6-digit routing code">
+              <span id="sort_code-error" class="field-error"></span>
+            </div>
+            <div class="form-group col-6">
+              <label for="account_no">Account Number <span class="req-star">*</span></label>
+              <input type="text" id="account_no" name="account_no" class="form-control" placeholder="8-digit account number">
+              <span id="account_no-error" class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <a href="page-6.html" class="btn btn-secondary">← Back to Step 6</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Final Step →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    const priorRadios = document.querySelectorAll('input[name="prior_assistance"]');
+    const priorBox = document.getElementById('prior-details-box');
+    const payRadios = document.querySelectorAll('input[name="payment_method"]');
+    const bankBox = document.getElementById('bank-details-box');
+
+    priorRadios.forEach(r => {
+      r.addEventListener('change', (e) => {
+        priorBox.hidden = e.target.value !== 'Yes';
+      });
+    });
+
+    payRadios.forEach(r => {
+      r.addEventListener('change', (e) => {
+        bankBox.hidden = e.target.value !== 'Direct Deposit';
+      });
+    });
+
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-7'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      Object.keys(master).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          if (input.type === 'radio') {
+            const r = document.querySelector(`[name="${key}"][value="${master[key]}"]`);
+            if (r) r.checked = true;
+          } else { input.value = master[key]; }
+        }
+      });
+      if (master.prior_assistance === 'Yes') priorBox.hidden = false;
+      if (master.payment_method === 'Direct Deposit') bankBox.hidden = false;
+    });
+
+    document.getElementById('form-step-7').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const prior = document.querySelector('input[name="prior_assistance"]:checked');
+      const pay = document.querySelector('input[name="payment_method"]:checked');
+
+      if (!prior) errors.push({ fieldId: 'prior_assistance-error', fieldLabel: 'Prior Assistance Status', message: 'Select whether prior assistance was received.' });
+      
+      if (prior && prior.value === 'Yes') {
+        const jur = document.getElementById('prior_jurisdiction').value.trim();
+        const prog = document.getElementById('prior_program_name').value.trim();
+        const dates = document.getElementById('prior_dates').value.trim();
+        if (!jur) errors.push({ fieldId: 'prior_jurisdiction', fieldLabel: 'Prior Jurisdiction', message: 'Enter county or state name.' });
+        if (!prog) errors.push({ fieldId: 'prior_program_name', fieldLabel: 'Prior Program Name', message: 'Enter program name.' });
+        if (!dates) errors.push({ fieldId: 'prior_dates', fieldLabel: 'Approximate Dates', message: 'Enter approximate dates.' });
+      }
+
+      if (!pay) errors.push({ fieldId: 'payment_method-error', fieldLabel: 'Payment Method', message: 'Select payment method.' });
+      if (pay && pay.value === 'Direct Deposit') {
+        const sort = document.getElementById('sort_code').value.trim();
+        const acc = document.getElementById('account_no').value.trim();
+        if (!sort) errors.push({ fieldId: 'sort_code', fieldLabel: 'Routing Code', message: 'Enter bank routing code.' });
+        if (!acc) errors.push({ fieldId: 'account_no', fieldLabel: 'Account Number', message: 'Enter bank account number.' });
+      }
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-8.html';
+      }
+    });
+  </script>
+</body>
+</html>

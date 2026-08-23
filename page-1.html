@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 1: Applicant Details | Form HSP-1 (LS-2026/04)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your applicant details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 1 of 8</span>
+        <h1 style="margin-top:8px;">Applicant Details</h1>
+        <p class="hint">Fields marked with <span class="req-star">*</span> are required.</p>
+
+        <form id="form-step-1" novalidate>
+          <div class="form-group">
+            <label for="client_id">Reference Number / Client ID <span class="label-optional">(Optional)</span></label>
+            <span class="hint">If you have applied before, enter your reference number. <strong>If first time, leave blank.</strong></span>
+            <input type="text" id="client_id" name="client_id" class="form-control" autocomplete="off">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="forenames">First Name / Forename(s) <span class="req-star">*</span></label>
+              <input type="text" id="forenames" name="forenames" class="form-control" aria-required="true" autocomplete="given-name">
+              <span id="forenames-error" class="field-error"></span>
+            </div>
+            <div class="form-group col-6">
+              <label for="surname">Last Name / Surname <span class="req-star">*</span></label>
+              <input type="text" id="surname" name="surname" class="form-control" aria-required="true" autocomplete="family-name">
+              <span id="surname-error" class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="req-star">*</span></label>
+            <input type="date" id="dob" name="dob" class="form-control" style="width:auto;" aria-required="true">
+            <span id="dob-error" class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="ssn">National Insurance / Social Security Reference <span class="req-star">*</span></label>
+            <input type="text" id="ssn" name="ssn" class="form-control" aria-required="true">
+            <span id="ssn-error" class="field-error"></span>
+          </div>
+
+          <fieldset class="form-group" style="background:#f8fafc; border:2px solid #cbd5e1;">
+            <legend>Applicant Identity Verification (Directive LS-2026/04) <span class="req-star">*</span></legend>
+            <p class="hint">Mandatory identity verification required by Calder County Legal Services Directive LS-2026/04.</p>
+
+            <div id="applicant-doc-fields">
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="applicant_doc_type">Identity Document Type <span class="req-star">*</span></label>
+                  <select id="applicant_doc_type" name="applicant_doc_type" class="form-control">
+                    <option value="">-- Select Document Type --</option>
+                    <option value="State ID">State ID</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Permanent Resident Card">Permanent Resident Card</option>
+                    <option value="Tribal ID">Tribal ID</option>
+                    <option value="Other">Other Official Identity Document</option>
+                  </select>
+                  <span id="applicant_doc_type-error" class="field-error"></span>
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="applicant_doc_ref">Document Reference Number <span class="req-star">*</span></label>
+                  <input type="text" id="applicant_doc_ref" name="applicant_doc_ref" class="form-control" placeholder="e.g. ID-8941209">
+                  <span id="applicant_doc_ref-error" class="field-error"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="applicant_no_doc" name="applicant_no_doc">
+                <span>I do not have an acceptable identity document</span>
+              </label>
+            </div>
+
+            <div id="applicant-no-doc-reason-group" class="form-group" hidden>
+              <label for="applicant_no_doc_reason">Reason for no acceptable identity document <span class="req-star">*</span></label>
+              <textarea id="applicant_no_doc_reason" name="applicant_no_doc_reason" class="form-control" rows="2" placeholder="Please state why an acceptable document is not available..."></textarea>
+              <span id="applicant_no_doc_reason-error" class="field-error"></span>
+
+              <div class="supervisor-badge">
+                ⚠️ <strong>Supervisor Referral Flagged:</strong> Your case will be referred for administrative verification review.
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="phone">Daytime Telephone Number <span class="req-star">*</span></label>
+              <input type="tel" id="phone" name="phone" class="form-control" aria-required="true" autocomplete="tel">
+              <span id="phone-error" class="field-error"></span>
+            </div>
+            <div class="form-group col-6">
+              <label for="email">Email Address <span class="label-optional">(Optional)</span></label>
+              <input type="email" id="email" name="email" class="form-control" autocomplete="email">
+            </div>
+          </div>
+
+          <fieldset class="form-group">
+            <legend>Preferred method of contact <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="contact_pref" value="Telephone" aria-required="true"> <span>Telephone call</span></label>
+              <label class="radio-label"><input type="radio" name="contact_pref" value="SMS" aria-required="true"> <span>Text message (SMS)</span></label>
+              <label class="radio-label"><input type="radio" name="contact_pref" value="Email" aria-required="true"> <span>Email</span></label>
+              <label class="radio-label"><input type="radio" name="contact_pref" value="Post" aria-required="true"> <span>Postal mail</span></label>
+            </div>
+            <span id="contact_pref-error" class="field-error"></span>
+          </fieldset>
+
+          <div class="nav-actions">
+            <a href="index.html" class="btn btn-secondary">← Back to Overview</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Step 2 →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    const noDocChk = document.getElementById('applicant_no_doc');
+    const docFields = document.getElementById('applicant-doc-fields');
+    const reasonGroup = document.getElementById('applicant-no-doc-reason-group');
+
+    noDocChk.addEventListener('change', (e) => {
+      const checked = e.target.checked;
+      docFields.hidden = checked;
+      reasonGroup.hidden = !checked;
+    });
+
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-1'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      obj['applicant_no_doc'] = noDocChk.checked ? 'true' : 'false';
+      obj['applicant_supervisor_referral'] = noDocChk.checked ? 'true' : 'false';
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      Object.keys(master).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          if (input.type === 'radio') {
+            const r = document.querySelector(`[name="${key}"][value="${master[key]}"]`);
+            if (r) r.checked = true;
+          } else if (input.type === 'checkbox') {
+            input.checked = master[key] === 'true' || master[key] === true;
+          } else { input.value = master[key]; }
+        }
+      });
+      if (master.applicant_no_doc === 'true' || master.applicant_no_doc === true) {
+        noDocChk.checked = true;
+        docFields.hidden = true;
+        reasonGroup.hidden = false;
+      }
+    });
+
+    document.getElementById('form-step-1').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const forenames = document.getElementById('forenames').value.trim();
+      const surname = document.getElementById('surname').value.trim();
+      const dob = document.getElementById('dob').value;
+      const ssn = document.getElementById('ssn').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const contactPref = document.querySelector('input[name="contact_pref"]:checked');
+
+      if (!forenames) errors.push({ fieldId: 'forenames', fieldLabel: 'First Name', message: 'Enter your first name.' });
+      if (!surname) errors.push({ fieldId: 'surname', fieldLabel: 'Last Name', message: 'Enter your last name.' });
+      if (!dob) errors.push({ fieldId: 'dob', fieldLabel: 'Date of Birth', message: 'Enter your date of birth.' });
+      if (!ssn) errors.push({ fieldId: 'ssn', fieldLabel: 'Social Security / NI Reference', message: 'Enter your reference number.' });
+
+      if (noDocChk.checked) {
+        const reason = document.getElementById('applicant_no_doc_reason').value.trim();
+        if (!reason) errors.push({ fieldId: 'applicant_no_doc_reason', fieldLabel: 'Identity Document Reason', message: 'State the reason why no acceptable document is available.' });
+      } else {
+        const docType = document.getElementById('applicant_doc_type').value;
+        const docRef = document.getElementById('applicant_doc_ref').value.trim();
+        if (!docType) errors.push({ fieldId: 'applicant_doc_type', fieldLabel: 'Identity Document Type', message: 'Select document type.' });
+        if (!docRef) errors.push({ fieldId: 'applicant_doc_ref', fieldLabel: 'Document Reference Number', message: 'Enter document reference number.' });
+      }
+
+      if (!phone) errors.push({ fieldId: 'phone', fieldLabel: 'Telephone', message: 'Enter daytime telephone.' });
+      if (!contactPref) errors.push({ fieldId: 'contact_pref-error', fieldLabel: 'Contact Preference', message: 'Select preferred contact method.' });
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-2.html';
+      }
+    });
+  </script>
+</body>
+</html>

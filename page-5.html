@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 5: Capital & Savings | Form HSP-1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your capital details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 5 of 8</span>
+        <h1 style="margin-top:8px;">Capital & Savings</h1>
+        <p class="hint">Tell us about money held in bank accounts or savings by anyone in your household.</p>
+
+        <form id="form-step-5" novalidate>
+          <div class="form-group">
+            <label for="liquid">Total Money in Bank Accounts & Savings <span class="req-star">*</span></label>
+            <span class="hint">Includes current accounts, savings accounts, and cash. <em>If 0, enter 0.</em></span>
+            <div class="currency-wrapper">
+              <span class="currency-symbol" aria-hidden="true">$</span>
+              <input type="number" id="liquid" name="liquid" min="0" step="0.01" class="form-control currency-input" aria-required="true" placeholder="0.00">
+            </div>
+            <span id="liquid-error" class="field-error"></span>
+          </div>
+
+          <fieldset class="form-group">
+            <legend>Do you or anyone in your household own any land or property other than your main home? <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="property" value="No" aria-required="true"> <span>No</span></label>
+              <label class="radio-label"><input type="radio" name="property" value="Yes" aria-required="true"> <span>Yes</span></label>
+            </div>
+            <span id="property-error" class="field-error"></span>
+          </fieldset>
+
+          <div class="nav-actions">
+            <a href="page-4.html" class="btn btn-secondary">← Back to Step 4</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Step 6 →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-5'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      Object.keys(master).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          if (input.type === 'radio') {
+            const r = document.querySelector(`[name="${key}"][value="${master[key]}"]`);
+            if (r) r.checked = true;
+          } else { input.value = master[key]; }
+        }
+      });
+    });
+
+    document.getElementById('form-step-5').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const liquid = document.getElementById('liquid').value;
+      const property = document.querySelector('input[name="property"]:checked');
+
+      if (liquid === '' || Number(liquid) < 0) errors.push({ fieldId: 'liquid', fieldLabel: 'Bank Savings Amount', message: 'Enter total bank savings (0 if none).' });
+      if (!property) errors.push({ fieldId: 'property-error', fieldLabel: 'Property Ownership Status', message: 'Select property ownership option.' });
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-6.html';
+      }
+    });
+  </script>
+</body>
+</html>

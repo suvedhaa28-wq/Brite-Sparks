@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 3: Household Composition | Form HSP-1 (LS-2026/04)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: If you leave to find family dates of birth, your answers remain saved on this phone.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your household details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 3 of 8</span>
+        <h1 style="margin-top:8px;">Household Composition</h1>
+        <p class="hint">Tell us about everyone who lives with you in your home.</p>
+
+        <form id="form-step-3" novalidate>
+          <fieldset class="form-group">
+            <legend>Do you currently live alone or with other people? <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="livesAlone" value="alone" aria-required="true"> <span>I live alone</span></label>
+              <label class="radio-label"><input type="radio" name="livesAlone" value="others" aria-required="true"> <span>I live with family, a partner, children, or roommates</span></label>
+            </div>
+            <span id="livesAlone-error" class="field-error"></span>
+          </fieldset>
+
+          <div id="household-members-section" hidden>
+            <h2 style="font-size:1.2rem; color:var(--primary-color);">People who live in your household</h2>
+            <p class="hint">For members aged 16 or older, identity verification will be conditionally requested (LS-2026/04).</p>
+
+            <div id="members-container"></div>
+            <button type="button" id="btn-add-member" class="btn btn-outline" style="width:100%;">+ Add Person to Household</button>
+          </div>
+
+          <fieldset class="form-group" style="margin-top:24px;">
+            <legend>Has anyone moved into or out of your household in the last 12 months? <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="hh_change" value="No" aria-required="true"> <span>No change</span></label>
+              <label class="radio-label"><input type="radio" name="hh_change" value="Yes" aria-required="true"> <span>Yes (someone moved in or out)</span></label>
+            </div>
+            <span id="hh_change-error" class="field-error"></span>
+          </fieldset>
+
+          <div class="nav-actions">
+            <a href="page-2.html" class="btn btn-secondary">← Back to Step 2</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Step 4 →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    let count = 0;
+
+    document.querySelectorAll('input[name="livesAlone"]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        const isOthers = e.target.value === 'others';
+        document.getElementById('household-members-section').hidden = !isOthers;
+        if (isOthers && document.querySelectorAll('.member-card').length === 0) addMemberCard();
+      });
+    });
+
+    document.getElementById('btn-add-member').addEventListener('click', () => addMemberCard());
+
+    function calculateAge(dobString) {
+      if (!dobString) return 0;
+      const today = new Date();
+      const birth = new Date(dobString);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
+    }
+
+    function addMemberCard(data = {}) {
+      count++;
+      const id = count;
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.id = `member-card-${id}`;
+      card.innerHTML = `
+        <div class="member-card-header">
+          <strong>Person #${id}</strong>
+          <button type="button" style="color:#991b1b; background:#fee2e2; border:1px solid #f87171; padding:4px 8px; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="this.closest('.member-card').remove(); saveDraft();">Remove</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="mem_name_${id}">Full Name <span class="req-star">*</span></label>
+            <input type="text" id="mem_name_${id}" name="mem_name_${id}" class="form-control mem-name" value="${data.name || ''}">
+          </div>
+          <div class="form-group col-6">
+            <label for="mem_rel_${id}">Relationship <span class="req-star">*</span></label>
+            <select id="mem_rel_${id}" name="mem_rel_${id}" class="form-control mem-rel">
+              <option value="">-- Select --</option>
+              <option value="Spouse/partner" ${data.rel === 'Spouse/partner' ? 'selected' : ''}>Spouse / Partner</option>
+              <option value="Son/daughter" ${data.rel === 'Son/daughter' ? 'selected' : ''}>Son / Daughter</option>
+              <option value="Parent" ${data.rel === 'Parent' ? 'selected' : ''}>Parent</option>
+              <option value="Other relative" ${data.rel === 'Other relative' ? 'selected' : ''}>Other relative</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="mem_dob_${id}">Date of Birth <span class="req-star">*</span></label>
+          <input type="date" id="mem_dob_${id}" name="mem_dob_${id}" class="form-control mem-dob" value="${data.dob || ''}" style="width:auto;">
+        </div>
+
+        <div id="id-section-${id}" style="background:#ffffff; border:1px solid #cbd5e1; padding:12px; border-radius:6px; margin-top:12px;" ${data.dob && calculateAge(data.dob) >= 16 ? '' : 'hidden'}>
+          <strong style="color:var(--primary-color); font-size:0.95rem;">Identity Verification (Aged 16+)</strong>
+          <div id="id-doc-inputs-${id}">
+            <div class="form-row" style="margin-top:8px;">
+              <div class="form-group col-6">
+                <label for="mem_doc_type_${id}">Doc Type <span class="req-star">*</span></label>
+                <select id="mem_doc_type_${id}" name="mem_doc_type_${id}" class="form-control mem-doc-type">
+                  <option value="">-- Select Type --</option>
+                  <option value="State ID" ${data.docType === 'State ID' ? 'selected' : ''}>State ID</option>
+                  <option value="Passport" ${data.docType === 'Passport' ? 'selected' : ''}>Passport</option>
+                  <option value="Permanent Resident Card" ${data.docType === 'Permanent Resident Card' ? 'selected' : ''}>Permanent Resident Card</option>
+                  <option value="Tribal ID" ${data.docType === 'Tribal ID' ? 'selected' : ''}>Tribal ID</option>
+                  <option value="Other" ${data.docType === 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+              </div>
+              <div class="form-group col-6">
+                <label for="mem_doc_ref_${id}">Doc Reference # <span class="req-star">*</span></label>
+                <input type="text" id="mem_doc_ref_${id}" name="mem_doc_ref_${id}" class="form-control mem-doc-ref" value="${data.docRef || ''}">
+              </div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:6px;">
+            <label class="checkbox-label" style="padding:6px 10px; font-size:0.9rem;">
+              <input type="checkbox" id="mem_no_doc_${id}" name="mem_no_doc_${id}" class="mem-no-doc" ${data.noDoc ? 'checked' : ''}>
+              <span>No acceptable document available</span>
+            </label>
+          </div>
+          <div id="id-no-doc-reason-box-${id}" class="form-group" ${data.noDoc ? '' : 'hidden'}>
+            <label for="mem_no_doc_reason_${id}">Reason for no document <span class="req-star">*</span></label>
+            <input type="text" id="mem_no_doc_reason_${id}" name="mem_no_doc_reason_${id}" class="form-control mem-no-doc-reason" value="${data.noDocReason || ''}" placeholder="State reason...">
+            <div class="supervisor-badge" style="font-size:0.8rem; padding:6px 10px; margin-top:6px;">
+              ⚠️ Supervisor Referral Flagged for Person #${id}
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('members-container').appendChild(card);
+
+      const dobInput = card.querySelector('.mem-dob');
+      const idSection = card.querySelector(`#id-section-${id}`);
+      const noDocChk = card.querySelector(`.mem-no-doc`);
+      const docInputs = card.querySelector(`#id-doc-inputs-${id}`);
+      const reasonBox = card.querySelector(`#id-no-doc-reason-box-${id}`);
+
+      dobInput.addEventListener('change', () => {
+        const age = calculateAge(dobInput.value);
+        idSection.hidden = age < 16;
+      });
+
+      noDocChk.addEventListener('change', (e) => {
+        docInputs.hidden = e.target.checked;
+        reasonBox.hidden = !e.target.checked;
+      });
+    }
+
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-3'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      if (master.livesAlone) {
+        const r = document.querySelector(`input[name="livesAlone"][value="${master.livesAlone}"]`);
+        if (r) { r.checked = true; if (master.livesAlone === 'others') document.getElementById('household-members-section').hidden = false; }
+      }
+      if (master.hh_change) {
+        const r = document.querySelector(`input[name="hh_change"][value="${master.hh_change}"]`);
+        if (r) r.checked = true;
+      }
+    });
+
+    document.getElementById('form-step-3').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const livesAlone = document.querySelector('input[name="livesAlone"]:checked');
+      const hhChange = document.querySelector('input[name="hh_change"]:checked');
+
+      if (!livesAlone) errors.push({ fieldId: 'livesAlone-error', fieldLabel: 'Living Situation', message: 'Select living situation.' });
+      if (!hhChange) errors.push({ fieldId: 'hh_change-error', fieldLabel: 'Household Changes', message: 'Select household changes.' });
+
+      if (livesAlone && livesAlone.value === 'others') {
+        const cards = document.querySelectorAll('.member-card');
+        cards.forEach((card, idx) => {
+          const dob = card.querySelector('.mem-dob').value;
+          const age = calculateAge(dob);
+          if (age >= 16) {
+            const noDoc = card.querySelector('.mem-no-doc').checked;
+            if (noDoc) {
+              const reason = card.querySelector('.mem-no-doc-reason').value.trim();
+              if (!reason) errors.push({ fieldId: card.querySelector('.mem-no-doc-reason').id, fieldLabel: `Person #${idx+1} Identity Reason`, message: 'State reason for no document.' });
+            } else {
+              const docType = card.querySelector('.mem-doc-type').value;
+              const docRef = card.querySelector('.mem-doc-ref').value.trim();
+              if (!docType) errors.push({ fieldId: card.querySelector('.mem-doc-type').id, fieldLabel: `Person #${idx+1} Doc Type`, message: 'Select identity document type.' });
+              if (!docRef) errors.push({ fieldId: card.querySelector('.mem-doc-ref').id, fieldLabel: `Person #${idx+1} Doc Ref #`, message: 'Enter document reference number.' });
+            }
+          }
+        });
+      }
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-4.html';
+      }
+    });
+  </script>
+</body>
+</html>

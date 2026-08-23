@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 4: Income & Employment | Form HSP-1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your income details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 4 of 8</span>
+        <h1 style="margin-top:8px;">Income & Employment</h1>
+        <p class="hint">Tell us about regular household earnings before tax. If none, enter 0.</p>
+
+        <form id="form-step-4" novalidate>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="earn">Total Pay Before Tax (Wages / Salary) <span class="req-star">*</span></label>
+              <div class="currency-wrapper">
+                <span class="currency-symbol" aria-hidden="true">$</span>
+                <input type="number" id="earn" name="earn" min="0" step="0.01" class="form-control currency-input" aria-required="true" placeholder="0.00">
+              </div>
+              <span id="earn-error" class="field-error"></span>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="earn_freq">How often are you paid? <span class="req-star">*</span></label>
+              <select id="earn_freq" name="earn_freq" class="form-control" aria-required="true">
+                <option value="">-- Select --</option>
+                <option value="weekly">Weekly</option>
+                <option value="fortnightly">Fortnightly</option>
+                <option value="monthly">Monthly</option>
+                <option value="annually">Annually</option>
+                <option value="none">Not applicable (0 income)</option>
+              </select>
+              <span id="earn_freq-error" class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pension">Pensions / Benefits Received <span class="label-optional">(Optional)</span></label>
+            <div class="currency-wrapper">
+              <span class="currency-symbol" aria-hidden="true">$</span>
+              <input type="number" id="pension" name="pension" min="0" step="0.01" class="form-control currency-input" placeholder="0.00">
+            </div>
+          </div>
+
+          <fieldset class="form-group">
+            <legend>Has your household income changed significantly in the last 13 weeks? <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="inc_change" value="No" aria-required="true"> <span>No change</span></label>
+              <label class="radio-label"><input type="radio" name="inc_change" value="Yes" aria-required="true"> <span>Yes (changed recently)</span></label>
+            </div>
+            <span id="inc_change-error" class="field-error"></span>
+          </fieldset>
+
+          <div class="nav-actions">
+            <a href="page-3.html" class="btn btn-secondary">← Back to Step 3</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Step 5 →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-4'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      Object.keys(master).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          if (input.type === 'radio') {
+            const r = document.querySelector(`[name="${key}"][value="${master[key]}"]`);
+            if (r) r.checked = true;
+          } else { input.value = master[key]; }
+        }
+      });
+    });
+
+    document.getElementById('form-step-4').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const earn = document.getElementById('earn').value;
+      const freq = document.getElementById('earn_freq').value;
+      const incChange = document.querySelector('input[name="inc_change"]:checked');
+
+      if (earn === '' || Number(earn) < 0) errors.push({ fieldId: 'earn', fieldLabel: 'Pay Before Tax', message: 'Enter pay amount (0 if none).' });
+      if (!freq) errors.push({ fieldId: 'earn_freq', fieldLabel: 'Pay Frequency', message: 'Select pay frequency.' });
+      if (!incChange) errors.push({ fieldId: 'inc_change-error', fieldLabel: 'Income Change Status', message: 'Select an option.' });
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-5.html';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 2: Residence Details | Form HSP-1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your address details</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 2 of 8</span>
+        <h1 style="margin-top:8px;">Residence Details</h1>
+        <p class="hint">Fields marked with <span class="req-star">*</span> are required.</p>
+
+        <form id="form-step-2" novalidate>
+          <div class="form-group">
+            <label for="addr1">Address Line 1 <span class="req-star">*</span></label>
+            <input type="text" id="addr1" name="addr1" class="form-control" aria-required="true" autocomplete="address-line1">
+            <span id="addr1-error" class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="addr2">Address Line 2 <span class="label-optional">(Optional)</span></label>
+            <input type="text" id="addr2" name="addr2" class="form-control" autocomplete="address-line2">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="town">Town / City <span class="req-star">*</span></label>
+              <input type="text" id="town" name="town" class="form-control" aria-required="true" autocomplete="address-level2">
+              <span id="town-error" class="field-error"></span>
+            </div>
+            <div class="form-group col-6">
+              <label for="postcode">Postal Code <span class="req-star">*</span></label>
+              <input type="text" id="postcode" name="postcode" class="form-control" aria-required="true" autocomplete="postal-code">
+              <span id="postcode-error" class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res_from">Date you moved into this address <span class="req-star">*</span></label>
+            <input type="date" id="res_from" name="res_from" class="form-control" style="width:auto;" aria-required="true">
+            <span id="res_from-error" class="field-error"></span>
+          </div>
+
+          <fieldset class="form-group">
+            <legend>Housing & Renting Status (Tenure) <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="tenure" value="Owner-occupier" aria-required="true"> <span>Owner-occupier (Homeowner)</span></label>
+              <label class="radio-label"><input type="radio" name="tenure" value="Private tenancy" aria-required="true"> <span>Renting privately</span></label>
+              <label class="radio-label"><input type="radio" name="tenure" value="Social tenancy" aria-required="true"> <span>Council / Housing Association tenancy</span></label>
+              <label class="radio-label"><input type="radio" name="tenure" value="Resident with family" aria-required="true"> <span>Living with family or friends</span></label>
+              <label class="radio-label"><input type="radio" name="tenure" value="No fixed abode" aria-required="true"> <span>No fixed address / Temporary accommodation</span></label>
+            </div>
+            <span id="tenure-error" class="field-error"></span>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend>Do you plan to keep living in Calder County? <span class="req-star">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="domicile" value="Yes" aria-required="true"> <span>Yes, I plan to stay</span></label>
+              <label class="radio-label"><input type="radio" name="domicile" value="No" aria-required="true"> <span>No</span></label>
+              <label class="radio-label"><input type="radio" name="domicile" value="Unsure" aria-required="true"> <span>Unsure</span></label>
+            </div>
+            <span id="domicile-error" class="field-error"></span>
+          </fieldset>
+
+          <div class="nav-actions">
+            <a href="page-1.html" class="btn btn-secondary">← Back to Step 1</a>
+            <button type="submit" class="btn btn-primary">Save & Continue to Step 3 →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-2'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      Object.keys(master).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input) {
+          if (input.type === 'radio') {
+            const r = document.querySelector(`[name="${key}"][value="${master[key]}"]`);
+            if (r) r.checked = true;
+          } else { input.value = master[key]; }
+        }
+      });
+    });
+
+    document.getElementById('form-step-2').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const addr1 = document.getElementById('addr1').value.trim();
+      const town = document.getElementById('town').value.trim();
+      const postcode = document.getElementById('postcode').value.trim();
+      const resFrom = document.getElementById('res_from').value;
+      const tenure = document.querySelector('input[name="tenure"]:checked');
+      const domicile = document.querySelector('input[name="domicile"]:checked');
+
+      if (!addr1) errors.push({ fieldId: 'addr1', fieldLabel: 'Address Line 1', message: 'Enter address line 1.' });
+      if (!town) errors.push({ fieldId: 'town', fieldLabel: 'Town / City', message: 'Enter town or city.' });
+      if (!postcode) errors.push({ fieldId: 'postcode', fieldLabel: 'Postal Code', message: 'Enter postal code.' });
+      if (!resFrom) errors.push({ fieldId: 'res_from', fieldLabel: 'Move-in Date', message: 'Enter move-in date.' });
+      if (!tenure) errors.push({ fieldId: 'tenure-error', fieldLabel: 'Housing Status', message: 'Select housing status.' });
+      if (!domicile) errors.push({ fieldId: 'domicile-error', fieldLabel: 'Living Intent', message: 'Select living intent.' });
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        saveDraft();
+        window.location.href = 'page-3.html';
+      }
+    });
+  </script>
+</body>
+</html>

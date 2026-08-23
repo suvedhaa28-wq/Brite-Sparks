@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step 8: Declaration & Submission | Form HSP-1 (LS-2026/04)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="wrap">
+    <header class="hdr" role="banner">
+      <div class="hdr-title">Calder County — Department of Household Services</div>
+      <div class="hdr-badge">FORM HSP-1</div>
+    </header>
+
+    <div class="save-banner" role="status" aria-live="polite">
+      <span id="save-status-text">💾 Auto-Save Active: Your answers are saved automatically on this device.</span>
+    </div>
+
+    <main id="main-content" tabindex="-1" role="main">
+      <div id="error-summary" class="error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" hidden>
+        <h2 id="error-summary-title" class="error-summary-title">There is a problem with your declaration</h2>
+        <ul id="error-summary-list"></ul>
+      </div>
+
+      <div id="success-card" class="card" style="background:#f0fdf4; border:2px solid #86efac;" hidden>
+        <div style="font-size:3rem; text-align:center;">🎉</div>
+        <h1 style="color:#15803d; text-align:center; margin-top:0;">Application Submitted Successfully!</h1>
+        <p style="text-align:center; font-size:1.1rem; color:#166534;">Your application for Household Support has been officially logged with Calder County Department of Household Services.</p>
+
+        <div style="background:#ffffff; border:1px solid #bbf7d0; border-radius:6px; padding:20px; margin:20px 0; text-align:center;">
+          <span style="color:#475569; font-size:0.9rem;">Your Application Reference Code:</span>
+          <div style="font-size:1.8rem; font-weight:bold; color:#15803d; letter-spacing:1px; margin-top:4px;">HSP-2026-89412</div>
+          <p style="font-size:0.85rem; color:#475569; margin:6px 0 0 0;">Please keep this reference code for your records.</p>
+        </div>
+
+        <div id="supervisor-notice-summary" class="supervisor-badge" hidden>
+          ⚠️ <strong>Administrative Review Flagged:</strong> Your application contains an identity document waiver. A supervisor review will be conducted within 3 business days.
+        </div>
+
+        <p style="font-size:0.95rem; color:#166534; text-align:center;">A confirmation text/email has been dispatched based on your contact preference.</p>
+        <div style="text-align:center; margin-top:20px;">
+          <a href="index.html" class="btn btn-primary" onclick="HSPStorage.clearDraft();">Return to Home Page</a>
+        </div>
+      </div>
+
+      <div id="form-card" class="card">
+        <span style="background:#eef3fc; color:#1a3c8e; font-weight:bold; font-size:0.8rem; padding:4px 8px; border-radius:4px;">Step 8 of 8</span>
+        <h1 style="margin-top:8px;">Declaration & Final Submission</h1>
+        <p class="hint">Please review your declaration and submit your application.</p>
+
+        <form id="form-step-8" novalidate>
+          <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:16px; border-radius:6px; margin-bottom:20px; font-size:0.95rem;">
+            <h2 style="font-size:1.1rem; color:var(--primary-color); margin-top:0;">Declaration Statement</h2>
+            <p>I confirm that the information I have provided on this form is true, accurate, and complete to the best of my knowledge. I understand that supplying false details or withholding relevant income/capital information may result in recovery of funds or legal sanctions.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="declaration_agree" name="declaration_agree" aria-required="true">
+              <span><strong>I agree to the declaration statement above <span class="req-star">*</span></strong></span>
+            </label>
+            <span id="declaration_agree-error" class="field-error"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="signature">Full Signature / Name <span class="req-star">*</span></label>
+              <input type="text" id="signature" name="signature" class="form-control" aria-required="true" placeholder="Type your full legal name">
+              <span id="signature-error" class="field-error"></span>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="sig_date">Date of Signing <span class="req-star">*</span></label>
+              <input type="date" id="sig_date" name="sig_date" class="form-control" aria-required="true">
+              <span id="sig_date-error" class="field-error"></span>
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <a href="page-7.html" class="btn btn-secondary">← Back to Step 7</a>
+            <button type="submit" class="btn btn-submit">Submit Application Form →</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="accessibility.js"></script>
+  <script>
+    document.getElementById('sig_date').value = new Date().toISOString().split('T')[0];
+
+    document.addEventListener('input', saveDraft);
+    document.addEventListener('change', saveDraft);
+    function saveDraft() {
+      const data = new FormData(document.getElementById('form-step-8'));
+      const obj = {};
+      data.forEach((val, key) => obj[key] = val);
+      HSPStorage.saveDraft(obj);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const draft = HSPStorage.loadDraft();
+      if (!draft || !draft.data) return;
+      const master = draft.data;
+      if (master.signature) document.getElementById('signature').value = master.signature;
+      if (master.declaration_agree === 'true' || master.declaration_agree === true) {
+        document.getElementById('declaration_agree').checked = true;
+      }
+      if (master.applicant_no_doc === 'true' || master.applicant_no_doc === true) {
+        document.getElementById('supervisor-notice-summary').hidden = false;
+      }
+    });
+
+    document.getElementById('form-step-8').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errors = [];
+      const agree = document.getElementById('declaration_agree').checked;
+      const sig = document.getElementById('signature').value.trim();
+      const date = document.getElementById('sig_date').value;
+
+      if (!agree) errors.push({ fieldId: 'declaration_agree', fieldLabel: 'Declaration Agreement', message: 'You must agree to the declaration statement.' });
+      if (!sig) errors.push({ fieldId: 'signature', fieldLabel: 'Digital Signature', message: 'Type your full legal name as signature.' });
+      if (!date) errors.push({ fieldId: 'sig_date', fieldLabel: 'Date of Signing', message: 'Enter signing date.' });
+
+      if (errors.length > 0) {
+        HSPAccessibility.showErrorSummary(errors);
+      } else {
+        document.getElementById('form-card').hidden = true;
+        document.getElementById('success-card').hidden = false;
+        document.getElementById('success-card').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
