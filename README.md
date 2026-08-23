@@ -43,7 +43,8 @@ cd "path/to/your-project-folder"
 python -m http.server 8000
 
 # Open in your browser (Use 127.0.0.1 to avoid Windows DNS delays)
-http://127.0.0.1:8000/index.html
+http://127.0.0.1:5500/index.html
+
 ```
 
 ### Option 3: VS Code Live Server Extension
